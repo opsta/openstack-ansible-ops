@@ -52,7 +52,7 @@
       register: _my_cnf
       #when: inventory_hostname in "{{ groups['galera_all'] }}"
     - debug: 
-        msg: "{{ groups['galera_all'] }}"
+        msg: "{{inventory_hostname}}"
     - name: Copy my.cnf file into telegraf home
       copy:
         content: "{{ _my_cnf.content | b64decode }}"
