@@ -51,8 +51,6 @@
         src: "/root/.my.cnf"
       register: _my_cnf
       when: inventory_hostname in "{{ groups['galera_all'] }}"
-      debug: 
-        msg: {{ groups['galera_all'] }}
     - name: Copy my.cnf file into telegraf home
       copy:
         content: "{{ _my_cnf.content | b64decode }}"
