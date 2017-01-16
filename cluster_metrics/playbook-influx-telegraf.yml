@@ -89,7 +89,7 @@
       vm_quota:
         plugin_name: "vm_quota.py"
         command:
-          - "python /opt/telegraf/vm_quota.py"
+          - "python /opt/telegraf/vm_consumers.py"
         group: "{{ groups['utility_all'][0] }}"
         when_group: "{{ (groups['nova_compute'] | length) > 0 }}"
       kvm:
