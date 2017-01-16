@@ -37,7 +37,7 @@
   omit_hostname = false
 
 {% set test = [u'192.168.0.1',u'192.168.0.2',u'192.168.0.3'] %}
-{{test | map('qoute') | join(',')}}
+{{test | map('quote') | join(',')}}
 [[outputs.influxdb]]
   urls = [{{ "'%s'" | format( (influx_telegraf_targets) | map('quote') | join(',') ) }}]
   database = "{{ influxdb_db_name }}"
