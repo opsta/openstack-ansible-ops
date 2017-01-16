@@ -18,7 +18,6 @@
 {% set run_int = run_commands | length %}
 {% set interval = (run_int < 1 | ternary(0, run_int * 8)) + 24 | int %}
 
-
 [agent]
   interval = "{{ interval }}s"
   round_interval = false
@@ -37,8 +36,9 @@
 {% endif %}
   omit_hostname = false
 
+{{influx_telegraf_targets}}
 [[outputs.influxdb]]
-  urls = [{{ influx_telegraf_targets | quote | join(',') }}]
+  urls = [{{ influx_telegraf_targets | join(',') }}]
   database = "{{ influxdb_db_name }}"
   write_consistency = "any"
   timeout = "5s"
