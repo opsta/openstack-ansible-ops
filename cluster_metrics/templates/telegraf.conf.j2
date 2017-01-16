@@ -61,17 +61,7 @@
 {%   endif %}
 
 {% if inventory_hostname in groups['all_containers'] %}
-[[inputs.cpu]]
-  percpu = true
-  totalcpu = true
-  fielddrop = ["time_*"]
-
 [[inputs.net]]
-
-[[inputs.netstat]]
-
-[[inputs.disk]]
-  ignore_fs = ["tmpfs", "devtmpfs"]
 
 {% elif inventory_hostname in groups['hosts'] %}
 [[inputs.cpu]]
@@ -108,20 +98,6 @@
   # timeout = 1.0
   ## interface to send ping from (ping -I <INTERFACE>)
   # interface = ""
-
-[[inputs.udp_listener]]
-  ## Address and port to host UDP listener on
-  service_address = ":8092"
-  #
-  ## Number of UDP messages allowed to queue up. Once filled, the
-  ## UDP listener will start dropping packets.
-  allowed_pending_messages = 10000
-  #
-  ## Data format to consume.
-  ## Each data format has it's own unique set of configuration options, read
-  ## more about them here:
-  ## https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md
-  data_format = "influx"
 
 {% endif %}
 
