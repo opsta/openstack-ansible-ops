@@ -39,7 +39,7 @@
 {% set test = influx_telegraf_targets %}
 {{test}}
 [[outputs.influxdb]]
-  urls = [{{ ( '"%s"' | format(influx_telegraf_targets) ) | join(',') }}]
+  urls = [{{ "%s" | format(influx_telegraf_targets) }}]
   database = "{{ influxdb_db_name }}"
   write_consistency = "any"
   timeout = "5s"
