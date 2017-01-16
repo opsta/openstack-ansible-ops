@@ -37,9 +37,9 @@
   omit_hostname = false
 
 {% set test = influx_telegraf_targets %}
-{{test}}
+{{"test"}}
 [[outputs.influxdb]]
-  urls = [{{ influx_telegraf_targets | join(',') }}]
+  urls = [{{ ('"'(influx_telegraf_targets | map('quote'))'"') | join(',') }}]
   database = "{{ influxdb_db_name }}"
   write_consistency = "any"
   timeout = "5s"
