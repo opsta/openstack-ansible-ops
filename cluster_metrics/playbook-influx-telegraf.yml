@@ -64,6 +64,8 @@
         src: templates/telegraf.conf.j2
         dest: /etc/telegraf/telegraf.conf
       register: telegraf_config
+    - debug:
+        msg: "{{telegraf_config}}"
     - name: Enable and restart telegraf
       service:
         name: "telegraf"
