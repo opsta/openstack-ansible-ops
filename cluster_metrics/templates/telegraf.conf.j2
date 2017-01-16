@@ -16,8 +16,8 @@
 {#  enough time to execute. Every added plugin will add 8 seconds to the interval with a #}
 {#  default of 24. This value is later used as the flush interval which needs to be 2x the agent. #}
 {% set run_int = run_commands | length %}
-{% set interval = (run_int < 1 | ternary(0, run_int * 8)) + 24 %}
-{{run_int}}
+{% set interval = (run_int < 1 | ternary(0, run_int * 8)) + 24 | int %}
+
 
 [agent]
   interval = "{{ interval }}s"
@@ -27,6 +27,7 @@
   collection_jitter = "8s"
   flush_interval = "{{ interval * 2 }}s"
   flush_jitter = "8s"
+  precision = "s"
   debug = false
   quiet = true
 {% if inventory_hostname in groups['all_containers'] %}
@@ -37,9 +38,8 @@
   omit_hostname = false
 
 [[outputs.influxdb]]
-  urls = [{{ influx_telegraf_targets | map('quote') | join(',') }}]
+  urls = [{{ influx_telegraf_targets | quote | join(',') }}]
   database = "{{ influxdb_db_name }}"
-  precision = "s"
   write_consistency = "any"
   timeout = "5s"
 
