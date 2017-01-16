@@ -58,6 +58,7 @@
         mode: "0440"
         owner: "telegraf"
         group: "telegraf"
+      when: inventory_hostname in groups['galera_all']
     - name: Drop telegraf config file
       template:
         src: templates/telegraf.conf.j2
