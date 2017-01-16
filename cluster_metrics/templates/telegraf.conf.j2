@@ -61,12 +61,17 @@
 {%   endif %}
 
 {% if inventory_hostname in groups['all_containers'] %}
+[[inputs.cpu]]
+  percpu = true
+  totalcpu = true
+  fielddrop = ["time_*"]
+
 [[inputs.net]]
-  ## By default, telegraf gathers stats from any up interface (excluding loopback)
-  ## Setting interfaces will tell it to gather these explicit interfaces,
-  ## regardless of status.
-  ##
-  interfaces = ["eth0"]
+
+[[inputs.netstat]]
+
+[[inputs.disk]]
+  ignore_fs = ["tmpfs", "devtmpfs"]
 
 {% elif inventory_hostname in groups['hosts'] %}
 [[inputs.cpu]]
@@ -79,20 +84,9 @@
 [[inputs.netstat]]
 
 [[inputs.disk]]
-  ## By default, telegraf gather stats for all mountpoints.
-  ## Setting mountpoints will restrict the stats to the specified mountpoints.
-  mount_points = ["/"]
-  ## Ignore some mountpoints by filesystem type. For example (dev)tmpfs (usually
-  ## present on /run, /var/run, /dev/shm or /dev).
   ignore_fs = ["tmpfs", "devtmpfs"]
 
 [[inputs.diskio]]
-  ## By default, telegraf will gather stats for all devices including
-  ## disk partitions.
-  ## Setting devices will restrict the stats to the specified devices.
-  devices = ["sda", "sdb"]
-  ## Uncomment the following line if you need disk serial numbers.
-  skip_serial_number = false
   
 [[inputs.kernel]]
 
@@ -101,33 +95,33 @@
 [[inputs.swap]]
 
 [[inputs.ping]]
-## NOTE: this plugin forks the ping command. You may need to set capabilities
-## via setcap cap_net_raw+p /bin/ping
-#
-## urls to ping
-urls = ["www.google.com"] # required
-## number of pings to send per collection (ping -c <COUNT>)
-# count = 1
-## interval, in s, at which to ping. 0 == default (ping -i <PING_INTERVAL>)
-# ping_interval = 1.0
-## per-ping timeout, in s. 0 == no timeout (ping -W <TIMEOUT>)
-# timeout = 1.0
-## interface to send ping from (ping -I <INTERFACE>)
-# interface = ""
+  ## NOTE: this plugin forks the ping command. You may need to set capabilities
+  ## via setcap cap_net_raw+p /bin/ping
+  #
+  ## urls to ping
+  urls = ["www.google.com"] # required
+  ## number of pings to send per collection (ping -c <COUNT>)
+  # count = 1
+  ## interval, in s, at which to ping. 0 == default (ping -i <PING_INTERVAL>)
+  # ping_interval = 1.0
+  ## per-ping timeout, in s. 0 == no timeout (ping -W <TIMEOUT>)
+  # timeout = 1.0
+  ## interface to send ping from (ping -I <INTERFACE>)
+  # interface = ""
 
 [[inputs.udp_listener]]
-## Address and port to host UDP listener on
-service_address = ":8092"
-#
-## Number of UDP messages allowed to queue up. Once filled, the
-## UDP listener will start dropping packets.
-allowed_pending_messages = 10000
-#
-## Data format to consume.
-## Each data format has it's own unique set of configuration options, read
-## more about them here:
-## https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md
-data_format = "influx"
+  ## Address and port to host UDP listener on
+  service_address = ":8092"
+  #
+  ## Number of UDP messages allowed to queue up. Once filled, the
+  ## UDP listener will start dropping packets.
+  allowed_pending_messages = 10000
+  #
+  ## Data format to consume.
+  ## Each data format has it's own unique set of configuration options, read
+  ## more about them here:
+  ## https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md
+  data_format = "influx"
 
 {% endif %}
 
