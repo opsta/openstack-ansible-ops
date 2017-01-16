@@ -19,8 +19,6 @@
 {% set interval = (run_int < 1 | ternary(0, run_int * 8)) + 24 %}
 {{run_int}}
 
-{{ternary(0, run_int * 8)) + 24}}
-
 [agent]
   interval = "{{ interval }}s"
   round_interval = false
