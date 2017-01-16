@@ -17,6 +17,7 @@
 {#  default of 24. This value is later used as the flush interval which needs to be 2x the agent. #}
 {% set run_int = run_commands | length %}
 {% set interval = (run_int < 1 | ternary(0, run_int * 8)) + 24 %}
+{{run_commands}}
 
 [agent]
   interval = "{{ interval }}s"
