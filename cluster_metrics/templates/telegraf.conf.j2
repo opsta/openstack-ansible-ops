@@ -16,15 +16,15 @@
 {#  enough time to execute. Every added plugin will add 8 seconds to the interval with a #}
 {#  default of 24. This value is later used as the flush interval which needs to be 2x the agent. #}
 {% set run_int = run_commands | length %}
-{% set interval = (run_int < 1 | ternary(0, run_int * 8)) + 24 | int %}
+{% set interval = (run_int < 1 | ternary(0, run_int * 8)) + 24 %}
 
 [agent]
-  interval = "{{ interval }}s"
+  interval = "{{ interval | int }}s"
   round_interval = false
   metric_batch_size = 1024
   metric_buffer_limit = 10240
   collection_jitter = "8s"
-  flush_interval = "{{ interval * 2 }}s"
+  flush_interval = "{{ (interval | int) * 2 }}s"
   flush_jitter = "8s"
   precision = "s"
   debug = false
@@ -36,9 +36,8 @@
 {% endif %}
   omit_hostname = false
 
-{{influx_telegraf_targets}}
 [[outputs.influxdb]]
-  urls = [{{ influx_telegraf_targets | join(',') }}]
+  urls = [{{ "\"influx_telegraf_targets\"" | join(',') }}]
   database = "{{ influxdb_db_name }}"
   write_consistency = "any"
   timeout = "5s"
